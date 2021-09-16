@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿**十分钟带你了解HTTPS、CA（Certificate Authority）、自签名证书**
+﻿﻿﻿﻿﻿﻿﻿**十分钟带你了解HTTPS、CA（Certificate Authority）、自签名证书**
 
 **一、HTTPS工作原理**
 
@@ -112,7 +112,7 @@
 
 **实战-实现HTTPS通信：**
 
-**1、生成自签名证书，位置：当前目录下**
+**1、openssl生成自签名证书，结果：当前目录多出：local.test.pem**
 
     [root@VM-0-10-centos home]# openssl req -new -x509 -keyout local.test.pem -out local.test.pem -days 365 -nodes -subj "/C=US/ST=CA/L=LA/O=Test/CN=www.youwant.com"
     
