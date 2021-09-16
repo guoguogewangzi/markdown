@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿﻿**十分钟带你了解HTTPS、CA（Certificate Authority）、自签名证书**
+﻿﻿﻿﻿﻿﻿﻿﻿**十分钟带你了解HTTPS、CA（Certificate Authority）、自签名证书**
 
 **一、HTTPS工作原理**
 
@@ -112,7 +112,7 @@
 
 **实战-实现HTTPS通信：**
 
-**1、openssl生成自签名证书，结果：当前目录多出：local.test.pem**
+**1、openssl生成自签名证书，结果：当前目录多出：local.test.pem文件**
 
     [root@VM-0-10-centos home]# openssl req -new -x509 -keyout local.test.pem -out local.test.pem -days 365 -nodes -subj "/C=US/ST=CA/L=LA/O=Test/CN=www.youwant.com"
     
@@ -138,9 +138,9 @@ req      :伪命令req大致有3个功能：生成证书请求文件、验证证
 
 -x509   :说明生成自签名证书
 
--keyout  :指定私钥保存位置
+-keyout  :指定私钥保存位置（本次位置为：local.test.pem文件里）
 
--out    :你的证书存在的位置(指定生成的证书请求或者自签名证书名称)
+-out    :你的证书存在的位置  (指定生成的证书请求或者自签名证书名称)（本次位置为：local.test.pem文件里）
 
 -day   :所颁发的证书有效期
 
