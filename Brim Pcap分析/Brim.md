@@ -31,8 +31,11 @@ https://github.com/brimdata/brim/releases
 pcap中{
 
 src	->	dst [syn]
+
 src	<-	dst [syn,ack]
+
 src	->	dst [ack]
+
 src	->	dst [fin,ack]
 
 }
@@ -42,8 +45,11 @@ src	->	dst [fin,ack]
 pcap中{
 
 src->dst [syn]
+
 src<-dst [syn,ack]
+
 src->dst [ack]
+
 src<-dst [fin,ack]
 
 }
