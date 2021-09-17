@@ -1,8 +1,8 @@
-<big>**Brim Pcap分析软件**</big>
+<font size=5>**Brim Pcap分析软件**</font>
 
-1
 
-Brim下载：
+
+下载：
 https://github.com/brimdata/brim/releases
 
 
