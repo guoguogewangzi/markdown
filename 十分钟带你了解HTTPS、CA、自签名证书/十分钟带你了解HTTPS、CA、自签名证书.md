@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿﻿﻿**十分钟带你了解HTTPS、CA（Certificate Authority）、自签名证书**
+﻿﻿﻿﻿﻿﻿﻿﻿﻿**十分钟带你了解HTTPS、CA（Certificate Authority）、自签名证书**
 
 **一、HTTPS工作原理**
 
@@ -168,7 +168,7 @@ req      :伪命令req大致有3个功能：生成证书请求文件、验证证
                                    certfile=server_cert,
                                    ssl_version=ssl.PROTOCOL_TLS)
     
-    print("Server HTTPS on" + server_ip + " port " + str(server_port) + " (https://" + server_ip + ":" + str(server_port) + ") ...")
+    print("Server HTTPS on " + server_ip + " port " + str(server_port) + " (https://" + server_ip + ":" + str(server_port) + ") ...")
     
     httpd.serve_forever()
 
