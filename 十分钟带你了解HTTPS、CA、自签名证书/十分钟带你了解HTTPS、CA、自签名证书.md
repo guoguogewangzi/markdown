@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿﻿﻿﻿**十分钟带你了解HTTPS、CA（Certificate Authority）、自签名证书**
+﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿**十分钟带你了解HTTPS、CA（Certificate Authority）、自签名证书**
 
 **一、HTTPS工作原理**
 
@@ -154,7 +154,7 @@ req      :伪命令req大致有3个功能：生成证书请求文件、验证证
 
 
 
-**3、通过python3 -m http.server方式开启http服务，本次使用simple-https-server.py脚本如下：**
+**3、通过python3 -m http.server或python2 -m SimpleHTTPServer方式可以开启http服务，本次执行simple-https-server.py脚本开启http服务如下：**
 
     import http.server,ssl
     server_ip = '0.0.0.0'
