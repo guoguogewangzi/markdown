@@ -1,6 +1,6 @@
 ![image-20211001012404125](img/fofa/image-20211001012404125.png)
 
-**1.FOFA通过title网站标题**
+**1、FOFA通过title网站标题**
 
 ![image-20211001012656259](img/fofa/image-20211001012656259.png)
 
