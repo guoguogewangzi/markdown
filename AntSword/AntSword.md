@@ -16,11 +16,11 @@
 
 唯一官方github下载地址：https://github.com/AntSwordProject/
 
-
-
 注意：
 
-我们下载的时候需要下载两个部分，一个是项目核心源码”antSword“，另一个是加载器；加载器则分为三个版本：Mac、Windows、Linux。[![中国蚁剑下载](img/AntSword/1-3.png)](https://www.fujieace.com/wp-content/uploads/2019/07/1-3.png?x88036)
+我们下载的时候需要下载两个部分，一个是项目核心源码”antSword“，另一个是加载器；加载器则分为三个版本：Mac、Windows、Linux。
+
+![image-20211009184312356](assets/image-20211009184312356.png)
 
 
 
@@ -52,13 +52,13 @@
 
 > 注意：这个项目文件夹就是你以后需要备份的，存储着你的shell和shell内的资料。
 
-[![中国蚁剑 初始化](img/AntSword/663.png)](https://www.fujieace.com/wp-content/uploads/2019/07/663.png?x88036)
+![image-20211009184403911](assets/image-20211009184403911.png)
+
+
 
 2、等初始化完成后，再双击“AntSword.exe”即可正常启动！
 
-[![中国蚁剑启动界面](img/AntSword/888.png)](https://www.fujieace.com/wp-content/uploads/2019/07/888.png?x88036)
-
-
+![image-20211009184428489](assets/image-20211009184428489.png)
 
 ## 三、中国蚁剑使用
 
@@ -70,37 +70,37 @@
 
 首先：右键单击 - 添加数据；
 
-[![中国蚁剑](img/AntSword/999-1.png)](https://www.fujieace.com/wp-content/uploads/2019/07/999-1.png?x88036)
+![中国蚁剑](assets/999-1-16337769768965.png)
 
 
 
 其次：输入URL地址，连接密码以及编码设置。PHP语言推荐编辑器使用chr加密；
 
-[![中国蚁剑 shell连接](img/AntSword/9.png)](https://www.fujieace.com/wp-content/uploads/2019/07/9.png?x88036)
+[![中国蚁剑 shell连接](assets/9.png)](https://www.fujieace.com/wp-content/uploads/2019/07/9.png?x88036)
 
 
 
 再次：如果需要自己写编码器的加密类型，可以按下图来操作：
 
-[![中国蚁剑编码器自定义](img/AntSword/10.png)](https://www.fujieace.com/wp-content/uploads/2019/07/10.png?x88036)
+[![中国蚁剑编码器自定义](assets/10.png)](https://www.fujieace.com/wp-content/uploads/2019/07/10.png?x88036)
 
 
 
 从次：还可以配置shell的请求信息和post内容；
 
-[![中国蚁剑请求信息和post内容](img/AntSword/3-4.png)](https://www.fujieace.com/wp-content/uploads/2019/07/3-4.png?x88036)
+[![中国蚁剑请求信息和post内容](assets/3-4.png)](https://www.fujieace.com/wp-content/uploads/2019/07/3-4.png?x88036)
 
 
 
-最后：还可以配置全局代理；[![中国蚁剑配置全局代理](img/AntSword/4-4.png)](https://www.fujieace.com/wp-content/uploads/2019/07/4-4.png?x88036)
+最后：还可以配置全局代理；
 
-
+![中国蚁剑配置全局代理](assets/4-4-16337768857711.png)
 
 **2、插件**
 
 中国蚁剑有一个插件市场，可以安装一些插件，插件有很多。以下是部份插件截图：
 
-[![中国蚁剑插件](img/AntSword/7.png)](https://www.fujieace.com/wp-content/uploads/2019/07/7.png?x88036)
+![中国蚁剑插件](assets/7-16337769015723.png)
 
 
 
@@ -112,7 +112,7 @@
 
 不妨，我们来对比一下默认不使用编码传输和base64编码传输的区别：
 
-[![base64编码](img/AntSword/33.jpg)](https://www.fujieace.com/wp-content/uploads/2019/07/33.jpg?x88036)
+![image-20211009184549254](assets/image-20211009184549254.png)
 
 
 
@@ -138,7 +138,7 @@ _0x4ee8506e59871=QGluaV9zZXQoImRpc3BsYXlfZXJyb3JzIiwgIjAiKTtAc2V0X3RpbWVfbGltaXQ
 
 再来看看chr编码传输，完全就全部编码了。
 
-[![chr编码](img/AntSword/32.jpg)](https://www.fujieace.com/wp-content/uploads/2019/07/32.jpg?x88036)
+![image-20211009184625091](assets/image-20211009184625091.png)
 
 
 
