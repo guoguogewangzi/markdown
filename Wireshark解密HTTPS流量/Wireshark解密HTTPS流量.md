@@ -193,14 +193,14 @@ CSR文件 证书签名请求文件，包含了服务器的密钥对，CA按照�
 执行命令：
 
 ```shell
-openssl req -newkey rsa:2048 -nodes -keyout test_key.pem -out csr.pem
+[root@VM-0-10-centos ~]# openssl req -newkey rsa:2048 -nodes -keyout test_key.pem -out csr.pem
 ```
 
 解释：
 
 ```css
-#-nodes 表示私钥不加密，若不带参数将提示输入密码
-#-newkey rsa:2048 -keyout test_key.pem 表示生成私钥(PKCS8格式)
+-nodes :表示私钥不加密，若不带参数将提示输入密码
+-newkey rsa:2048 -keyout test_key.pem 表示生成私钥(PKCS8格式)
 ```
 
 需要填些信息，自签名的除了密码，其他的无所谓。
@@ -235,8 +235,8 @@ An optional company name []:
 最终生成了密钥对文件和CSR文件。
 
 ```shell
-[root@localhost testopenssl]# ll
-total 8
+[root@VM-0-10-centos ~]# ll /root/
+total 24
 -rw-r--r-- 1 root root 1090 Dec  9 10:11 csr.pem
 -rw-r--r-- 1 root root 1704 Dec  9 10:11 test_key.pem
 ```
@@ -250,7 +250,7 @@ total 8
 ### 1.2 生成自签名证书
 
 ```shell
-openssl x509 -signkey test_key.pem -in csr.pem -req -days 3650 -out test_cert.pem
+[root@VM-0-10-centos ~]# openssl x509 -signkey test_key.pem -in csr.pem -req -days 3650 -out test_cert.pem
 Signature ok
 subject=/C=CN/ST=sichuan/L=chengdou/O=asiainfo/OU=testunit/CN=testssl.com/emailAddress=testssl@163.com
 Getting Private key
@@ -269,7 +269,7 @@ Getting Private key
 有时候需要PKCS#12 格式即.p12结尾的证书，命令如下：
 
 ```shell
- openssl pkcs12 -export -in test_cert.pem  -out test_cert.p12 -inkey test_key.pem 
+[root@VM-0-10-centos ~]# openssl pkcs12 -export -in test_cert.pem  -out test_cert.p12 -inkey test_key.pem 
 ```
 
 ![image-20211010040216600](assets/image-20211010040216600.png)
@@ -283,7 +283,7 @@ Getting Private key
 单独提取公钥的命令：
 
 ```shell
-openssl rsa -in test_key.pem  -pubout -out test_public_key.pem
+[root@VM-0-10-centos ~]# openssl rsa -in test_key.pem  -pubout -out test_public_key.pem
 ```
 
 ![image-20211010040432628](assets/image-20211010040432628.png)
@@ -293,7 +293,7 @@ openssl rsa -in test_key.pem  -pubout -out test_public_key.pem
 ### 1.4 提取私钥
 
 ```shell
-openssl rsa -in test_key.pem -passin pass:12345m
+[root@VM-0-10-centos ~]# openssl rsa -in test_key.pem -passin pass:12345m
 ```
 
 ![image-20211010040904444](assets/image-20211010040904444.png)
