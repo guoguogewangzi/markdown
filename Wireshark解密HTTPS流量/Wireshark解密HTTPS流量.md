@@ -342,7 +342,7 @@ docker官网搜索tomcat镜像，链接：https://hub.docker.com/_/tomcat
 
 
 
-拉取并启动：`docker run -it --rm -p 8888:8080 tomcat:9.0`，需要改一下：rm参数去掉：退出不删除容器--，添加 -d参数：后台启动，最终启动命令：
+拉取并启动：`docker run -it --rm -p 8888:8080 tomcat:9.0`，需要改一下：--rm参数去掉：退出不删除容器，添加 -d参数：后台启动，最终启动命令：
 
 [root@localhost ~]# docker run -it  -p 8888:8080  -d tomcat:9.0
 
