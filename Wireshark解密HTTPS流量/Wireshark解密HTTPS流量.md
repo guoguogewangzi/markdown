@@ -112,7 +112,7 @@ foodsgoodforliver[.]com – GET /invest_20.dll
 
 ![image-20211009165956380](assets/image-20211009165956380.png)
 
-## **参考链接**
+## **参考**
 
 https://unit42.paloaltonetworks.com/wireshark-tutorial-decrypting-https-traffic/
 
@@ -565,6 +565,8 @@ wireshark抓包:`ip.addr==192.168.111.137 and tcp.port==8888`
 
 
 # 参考
+
+https://www.cnblogs.com/yurang/p/11505741.html
 
 https://www.jianshu.com/p/fca9663f1e49
 
