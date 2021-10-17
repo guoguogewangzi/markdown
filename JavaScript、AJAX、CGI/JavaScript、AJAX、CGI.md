@@ -94,6 +94,15 @@
 
 ## <span id="head2"> 一、网页使用js的三种方式</span>
 
+首先开启http服务：
+
+```shell
+C:\Users\86188\Desktop>python3 -m http.server
+```
+
+<img src="assets/image-20211017213619885.png" alt="image-20211017213619885" style="zoom:70%;" />
+
+
 ### <span id="head3"> 1、直接添加脚本</span>
 
 #### <span id="head4">0x01 1.html文件</span>
