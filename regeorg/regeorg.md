@@ -97,3 +97,13 @@ regeorg转发端口后，如果目标web服务器的php版本小于5.4，是无�
 参考：
 
 https://www.freesion.com/article/3884747889/
+
+https://github.com/sensepost/reGeorg
+
+
+
+其他：
+
+https://www.ddosi.org/neo-regeorg/
+
+https://github.com/L-codes/Neo-reGeorg
