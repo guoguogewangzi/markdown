@@ -34,9 +34,17 @@ openssl enc -ciphername [-in filename] [-out filename] [-pass arg] [-e] [-d] [-a
 
 ```stata
 示例：
-加密：]# openssl enc -e -des3 -a -salt -in fstab -out jiami
-解密：]# openssl enc -d -des3 -a -salt -in fstab -out jiami
+加密：]# openssl enc -e -des3 -a -salt -in 2.pcap -out jiami         #jiami：为ASCII text
+解密：]# openssl enc -d -des3 -a -salt -in jiami -out jiemi.pcap     #可以在指定-k：密码
 ```
+
+
+
+查看`jiami文件`:
+
+![image-20211120003416148](assets/image-20211120003416148.png)
+
+
 
 #### 2、单向加密
 
