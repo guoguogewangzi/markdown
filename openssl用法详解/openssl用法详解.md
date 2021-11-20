@@ -64,13 +64,13 @@ openssl dgst [-md5|-md4|-md2|-sha1|-sha|-mdc2|-ripemd160|-dss1] [-c] [-d] [-hex]
 
 示例如下：
 
-![img](assets/a6jMF37.png!web)
+![img](assets/a6jMF37.png)
 
 单向加密除了 openssl dgst 工具还有： md5sum，sha1sum，sha224sum，sha256sum ，sha384sum，sha512sum
 
 示例如下：
 
-![img](assets/IZJvEvr.png!web)
+![img](assets/IZJvEvr.png)
 
 #### 3、生成密码
 
@@ -92,7 +92,7 @@ openssl passwd [-crypt] [-1] [-apr1] [-salt string] [-in file] [-stdin] [-noveri
 
 示例如下：
 
-![img](assets/3E3UVrf.png!web)
+![img](assets/3E3UVrf.png)
 
 #### 4、生成随机数
 
@@ -112,7 +112,7 @@ openssl rand [-out file] [-rand file(s)] [-base64] [-hex] num
 
 示例如下：
 
-![img](assets/R3QJJfV.png!web)
+![img](assets/R3QJJfV.png)
 
 #### 5、生成秘钥对
 
@@ -134,7 +134,7 @@ numbits：指定生成私钥的大小，默认是2048
 
 一般情况下秘钥文件的权限一定要控制好，只能自己读写，因此可以使用 umask 命令设置生成的私钥权限，示例如下：
 
-![img](assets/JFRRJjv.png!web)
+![img](assets/JFRRJjv.png)
 
 ras 的用法如下：
 
@@ -153,21 +153,21 @@ openssl rsa [-inform PEM|NET|DER] [-outform PEM|NET|DER] [-in filename] [-passin
 
 示例如下：
 
-![img](assets/6j2uMj7.png!web)
+![img](assets/6j2uMj7.png)
 
 #### 6、创建CA和申请证书
 
 使用openssl工具创建CA证书和申请证书时，需要先查看配置文件，因为配置文件中对证书的名称和存放位置等相关信息都做了定义，具体可参考 /etc/pki/tls/openssl.cnf 文件。
 
-![img](assets/ueYvai.png!web)
+![img](assets/ueYvai.png)
 
-![img](assets/QBRjaij.png!web)
+![img](assets/QBRjaij.png)
 
 #### （1）、创建自签证书
 
 第一步：创建为 CA 提供所需的目录及文件
 
-![img](assets/b2I3AbJ.png!web)
+![img](assets/b2I3AbJ.png)
 
 第二步：指明证书的开始编号
 
@@ -175,11 +175,11 @@ openssl rsa [-inform PEM|NET|DER] [-outform PEM|NET|DER] [-in filename] [-passin
 
 第三步：生成私钥，私钥的文件名与存放位置要与配置文件中的设置相匹配；
 
-![img](assets/auYNvyb.png!web)
+![img](assets/auYNvyb.png)
 
 第四步：生成自签证书，自签证书的存放位置也要与配置文件中的设置相匹配，生成证书时需要填写相应的信息；
 
-![img](assets/JVVRZvn.png!web)
+![img](assets/JVVRZvn.png)
 
 命令中用到的选项解释：
 
@@ -203,15 +203,15 @@ openssl rsa [-inform PEM|NET|DER] [-outform PEM|NET|DER] [-in filename] [-passin
 
 第三步：将请求通过可靠方式发送给 CA 主机
 
-![img](assets/fU7v2mA.png!web)
+![img](assets/fU7v2mA.png)
 
 第四步：CA 服务器拿到证书签署请求文件后颁发证书，这一步是在 CA 服务器上做的
 
-![img](assets/VrqQFrZ.png!web)
+![img](assets/VrqQFrZ.png)
 
 查看证书信息的命令为：
 
-![img](assets/BfYnqiI.png!web)
+![img](assets/BfYnqiI.png)
 
 #### （3）吊销证书
 
@@ -223,7 +223,7 @@ openssl rsa [-inform PEM|NET|DER] [-outform PEM|NET|DER] [-in filename] [-passin
 
 第三步：执行吊销操作
 
-![img](assets/J3Ufyya.png!web)
+![img](assets/J3Ufyya.png)
 
 第四步：生成吊销证书的吊销编号 （第一次吊销证书时执行）
 

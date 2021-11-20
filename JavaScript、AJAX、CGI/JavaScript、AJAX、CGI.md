@@ -123,7 +123,7 @@ C:\Users\86188\Desktop>python3 -m http.server
 
 #### <span id="head5">0x02 结果：</span>
 
-![image-20210929151718115](img/前端/image-20210929151718115.png)
+![image-20210929151718115](assets//image-20210929151718115.png)
 
 ### <span id="head6"> 2、使用script标记插入脚本</span>
 
@@ -150,7 +150,7 @@ C:\Users\86188\Desktop>python3 -m http.server
 
 #### <span id="head8">0x02 结果：</span>
 
-![image-20210929151803788](img/前端/image-20210929151803788.png)
+![image-20210929151803788](assets//image-20210929151803788.png)
 
 ### <span id="head9"> 3、链接脚本文件（最常用）</span>
 
@@ -188,17 +188,17 @@ C:\Users\86188\Desktop>python3 -m http.server
 
 #### <span id="head13">0x04 1.html文件</span>
 
-![image-20210929152439323](img/前端/image-20210929152439323.png) 
+![image-20210929152439323](assets//image-20210929152439323.png) 
 
 #### <span id="head14">0x05 1.js文件</span>
 
- ![image-20210929152430135](img/前端/image-20210929152430135.png)
+ ![image-20210929152430135](assets//image-20210929152430135.png)
 
  
 
 #### <span id="head15">0x06 结果：访问：http://127.0.0.1:8000/1.html，成功调用1.js文件</span>
 
-![image-20210929152351664](img/前端/image-20210929152351664.png) 
+![image-20210929152351664](assets//image-20210929152351664.png) 
 
  
 
@@ -236,27 +236,27 @@ C:\Users\86188\Desktop>python3 -m http.server
 
 ### <span id="head22"> 3、JS数据类型</span>
 
-![image-20210929154250796](img/前端/image-20210929154250796.png)
+![image-20210929154250796](assets//image-20210929154250796.png)
 
 ### <span id="head23"> 4、JS运算符</span>
 
-![image-20210929154508939](img/前端/image-20210929154508939.png)
+![image-20210929154508939](assets//image-20210929154508939.png)
 
 ### <span id="head24"> 5、JS控制语句</span>
 
-![image-20210929154601770](img/前端/image-20210929154601770.png)
+![image-20210929154601770](assets//image-20210929154601770.png)
 
 
 
-![image-20210929154804499](img/前端/image-20210929154804499.png)
+![image-20210929154804499](assets//image-20210929154804499.png)
 
 
 
-![image-20210929154932715](img/前端/image-20210929154932715.png)
+![image-20210929154932715](assets//image-20210929154932715.png)
 
 ### <span id="head25"> 6、JS函数</span>
 
-![image-20210929155026614](img/前端/image-20210929155026614.png)
+![image-20210929155026614](assets//image-20210929155026614.png)
 
 #### <span id="head26">0x01 例子：</span>
 
@@ -302,17 +302,17 @@ function fun1(){
 
 #### <span id="head27">0x02 结果：</span>
 
-![QQ录屏20210929160551](img/前端/QQ录屏20210929160551.gif)
+![QQ录屏20210929160551](assets//QQ录屏20210929160551.gif)
 
 
 
 ### <span id="head28"> 7、JS对象</span>
 
-![image-20210929162820296](img/前端/image-20210929162820296.png)
+![image-20210929162820296](assets//image-20210929162820296.png)
 
 #### <span id="head29"> （1）window对象</span>
 
-![image-20210929162857588](img/前端/image-20210929162857588.png)
+![image-20210929162857588](assets//image-20210929162857588.png)
 
 ##### <span id="head30">0x00 举例：</span>
 
@@ -373,13 +373,13 @@ function do_close_html(){
 
 ##### <span id="head33">0x03 结果：</span>
 
-![QQ录屏20210929164142](img/前端/QQ录屏20210929164142.gif)
+![QQ录屏20210929164142](assets//QQ录屏20210929164142.gif)
 
 
 
 #### <span id="head34"> （2）data对象</span>
 
-![image-20210929164746620](img/前端/image-20210929164746620.png)
+![image-20210929164746620](assets//image-20210929164746620.png)
 
 ##### <span id="head35">0x00 举例：</span>
 
@@ -428,11 +428,11 @@ document.write("<br>");
 
 ##### <span id="head38">0x03 结果：</span>
 
-![image-20210929165629181](img/前端/image-20210929165629181.png)
+![image-20210929165629181](assets//image-20210929165629181.png)
 
 #### <span id="head39"> （3）setTimeout函数和setInterval函数</span>
 
-![image-20210929170617997](img/前端/image-20210929170617997.png)
+![image-20210929170617997](assets//image-20210929170617997.png)
 
 
 
@@ -501,13 +501,13 @@ function stop() {
 
 ##### <span id="head43">0x03 结果：</span>
 
-![QQ录屏20210929191753](img/前端/QQ录屏20210929191753.gif)
+![QQ录屏20210929191753](assets//QQ录屏20210929191753.gif)
 
 
 
 #### <span id="head44"> （4）Math对象</span>
 
-![image-20210929192618363](img/前端/image-20210929192618363.png)
+![image-20210929192618363](assets//image-20210929192618363.png)
 
 ##### <span id="head45">0x00 举例：</span>
 
@@ -592,7 +592,7 @@ function mymath(arg){
 
 ##### <span id="head48">0x03 结果：</span>
 
-![QQ录屏20210929201010](img/前端/QQ录屏20210929201010.gif)
+![QQ录屏20210929201010](assets//QQ录屏20210929201010.gif)
 
 
 
@@ -600,11 +600,11 @@ function mymath(arg){
 
 #### <span id="head49"> （5）String对象</span>
 
-![image-20210929201922203](img/前端/image-20210929201922203.png)
+![image-20210929201922203](assets//image-20210929201922203.png)
 
 ##### <span id="head50">0x00 例子：字符串本身就是一个对象</span>
 
-![image-20210929202118543](img/前端/image-20210929202118543.png)
+![image-20210929202118543](assets//image-20210929202118543.png)
 
 
 
@@ -612,7 +612,7 @@ function mymath(arg){
 
 #### <span id="head51"> （6）全局函数</span>
 
-![image-20210929202830559](img/前端/image-20210929202830559.png)
+![image-20210929202830559](assets//image-20210929202830559.png)
 
 
 
@@ -620,7 +620,7 @@ function mymath(arg){
 
 ## <span id="head52"> 三、ajax局部更新网页流程图：浏览器操作服务器</span>
 
-![img](img/前端/wps3DB9.tmp.jpg) 
+![img](assets//wps3DB9.tmp.jpg) 
 
  
 
@@ -664,13 +664,13 @@ function get_xmlreq()
 
 ### <span id="head55"> 3、标准的XMLHttpRequest属性</span>
 
-![img](img/前端/wps3DCA.tmp.jpg) 
+![img](assets//wps3DCA.tmp.jpg) 
 
  
 
 ### <span id="head56"> 4、标准的XMLHttpRequest方法</span>
 
-![img](img/前端/wps3DCB.tmp.jpg) 
+![img](assets//wps3DCB.tmp.jpg) 
 
  
 
@@ -790,7 +790,7 @@ hello world
 
 #### <span id="head63">0x04 结果：</span>
 
-![QQ录屏20210929211040](img/前端/QQ录屏20210929211040.gif)
+![QQ录屏20210929211040](assets//QQ录屏20210929211040.gif)
 
 
 
@@ -804,15 +804,15 @@ hello world
 
 在我们网页端没有办法直接运行C程序，网页端：html，js,ajax都没有问题，但是C语言不行，通过CGI可以服务器与硬件沟通
 
-![image-20210930111145357](img/前端/image-20210930111145357.png)
+![image-20210930111145357](assets//image-20210930111145357.png)
 
 
 
 CGI可以用任何一种语言编写，只要这种语言具有标准输入，标准输出，和获取环境变量
 
-![image-20210930111510979](img/前端/image-20210930111510979.png)
+![image-20210930111510979](assets//image-20210930111510979.png)
 
-![image-20210930111634882](img/前端/image-20210930111634882.png)
+![image-20210930111634882](assets//image-20210930111634882.png)
 
 
 
@@ -891,7 +891,7 @@ www/
 
 #### <span id="head72">0x06 结果：</span>
 
-![123](img/前端/123.gif)
+![123](assets//123.gif)
 
 
 
@@ -1069,7 +1069,7 @@ www
 
 #### <span id="head79">0x06 结果：</span>
 
-![QQ录屏20210930164449](img/前端/QQ录屏20210930164449.gif)
+![QQ录屏20210930164449](assets//QQ录屏20210930164449.gif)
 
 
 
@@ -1263,7 +1263,7 @@ int main(void)
 
 #### <span id="head86">0x06 结果：</span>
 
-![QQ录屏20210930173838](img/前端/QQ录屏20210930173838.gif)
+![QQ录屏20210930173838](assets//QQ录屏20210930173838.gif)
 
 
 
