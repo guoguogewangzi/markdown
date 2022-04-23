@@ -24,7 +24,9 @@ ewomail访问地址：
 
 域名解析设置
 
-![image-20220424004450634](assets/image-20220424004450634.png)
+![image-20220424012802951](assets/image-20220424012802951.png)
+
+
 
 `telnet smtp.qq.com 25`测试
 
